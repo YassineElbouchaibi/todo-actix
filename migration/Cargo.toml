@@ -1,0 +1,18 @@
+[package]
+name = "migration"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+name = "migration"
+path = "src/lib.rs"
+
+[dependencies]
+# Internal dependencies
+entity = { path = "../entity" }
+
+# External dependencies
+async-std = { version = "^1", features = ["attributes", "tokio1"] }
+sea-orm-migration = { version = "^0", features = [ "sqlx-postgres", "runtime-actix-rustls" ] }
+
