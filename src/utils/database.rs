@@ -1,3 +1,4 @@
+// External dependencies
 use sea_orm::{DatabaseConnection, DbErr};
 
 pub fn create_database_url(
@@ -8,7 +9,8 @@ pub fn create_database_url(
     port: &u16,
     database: &str,
 ) -> String {
-    format!("{protocol}://{user}:{password}@{host}:{port}/{database}",
+    format!(
+        "{protocol}://{user}:{password}@{host}:{port}/{database}",
         protocol = protocol,
         user = user,
         password = password,
@@ -27,14 +29,7 @@ pub async fn create_database_connection(
     database: &str,
 ) -> Result<DatabaseConnection, DbErr> {
     println!("Creating database connection url...");
-    let db_url = create_database_url(
-        protocol,
-        user,
-        password,
-        host,
-        port,
-        database,
-    );
+    let db_url = create_database_url(protocol, user, password, host, port, database);
     let outcome = sea_orm::Database::connect(&db_url).await;
     println!("Database connection created using {}", &db_url);
 

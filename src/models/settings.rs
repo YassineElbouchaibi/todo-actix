@@ -1,3 +1,4 @@
+// External dependencies
 use config::{Config, ConfigError, Environment};
 use serde::Deserialize;
 

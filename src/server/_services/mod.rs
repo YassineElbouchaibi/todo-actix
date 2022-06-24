@@ -1,5 +1,5 @@
 mod healthcheck;
 
-mod _services;
-
-pub use _services::init;
+pub fn init(cfg: &mut actix_web::web::ServiceConfig) {
+    cfg.service(healthcheck::healthcheck);
+}

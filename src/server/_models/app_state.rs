@@ -1,5 +1,8 @@
-use crate::{models::settings::Settings, utils};
+// External dependencies
 use sea_orm::DatabaseConnection;
+
+// Application level dependencies
+use crate::{models::settings::Settings, utils};
 
 #[derive(Debug, Clone)]
 pub struct AppState {

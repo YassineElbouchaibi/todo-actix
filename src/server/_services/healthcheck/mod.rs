@@ -1,19 +1,14 @@
+mod model;
+
+// External dependencies
 use actix_web::{get, http, web, Responder, Result};
 use sea_orm::{ConnectionTrait, Statement};
-use serde::Serialize;
 
+// Application level dependencies
 use crate::server::_models::app_state::AppState;
 
-#[derive(Serialize)]
-enum HealthCheckStatus {
-    Available = 1,
-    Unavailable = 2,
-}
-
-#[derive(Serialize)]
-struct HealthCheckResponse {
-    status: HealthCheckStatus,
-}
+// Module level dependencies
+use model::{HealthCheckResponse, HealthCheckStatus};
 
 #[get("/healthcheck")]
 async fn healthcheck(data: web::Data<AppState>) -> Result<impl Responder> {
