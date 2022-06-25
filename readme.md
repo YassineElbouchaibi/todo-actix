@@ -34,6 +34,22 @@ Next things I would like to do:
 
 Read more @ https://www.sea-ql.org/SeaORM/docs/internal-design/diesel
 
+## Starting DB
+```sh
+$ docker-compose up
+```
+
+## Create 'todo-actix' database
+```sh
+$ docker-compose exec postgres bash -c "psql -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'todo-actix'\" | grep -q 1" || docker-compose exec postgres bash -c "createdb -U postgres 'todo-actix'"
+```
+
+## Running migrations
+```sh
+$ cd migrations
+$ cargo run
+```
+
 ## Running in development mode
 ```sh
 $ cargo run
