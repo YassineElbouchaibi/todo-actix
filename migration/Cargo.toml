@@ -15,4 +15,3 @@ entity = { path = "../entity" }
 # External dependencies
 async-std = { version = "^1", features = ["attributes", "tokio1"] }
 sea-orm-migration = { version = "^0", features = [ "sqlx-postgres", "runtime-actix-rustls" ] }
-

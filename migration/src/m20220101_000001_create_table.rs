@@ -1,5 +1,8 @@
 use entity::todo::{Column as TodoColumn, Entity as TodoEntity};
-use sea_orm_migration::prelude::*;
+use sea_orm_migration::{
+    prelude::*,
+    sea_orm::{ConnectionTrait, Statement},
+};
 
 pub struct Migration;
 
@@ -38,7 +41,27 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(TodoColumn::CompletedAt).timestamp_with_time_zone())
                     .to_owned(),
             )
-            .await
+            .await?;
+
+        manager
+            .get_connection()
+            .execute(Statement::from_string(
+                manager.get_database_backend(),
+                "ALTER TABLE todos ALTER COLUMN created_at SET DEFAULT timezone('utc', now())"
+                    .to_owned(),
+            ))
+            .await?;
+
+        manager
+            .get_connection()
+            .execute(Statement::from_string(
+                manager.get_database_backend(),
+                "ALTER TABLE todos ALTER COLUMN updated_at SET DEFAULT timezone('utc', now())"
+                    .to_owned(),
+            ))
+            .await?;
+
+        Ok(())
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {

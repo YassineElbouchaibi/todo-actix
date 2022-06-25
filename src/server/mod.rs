@@ -1,3 +1,4 @@
+mod _docs;
 mod _models;
 mod _services;
 
@@ -9,8 +10,9 @@ use actix_web::middleware;
 use crate::models::settings::Settings;
 
 // Module level dependencies
+use _docs::init_docs;
 use _models::app_state::AppState;
-use _services::init;
+use _services::init_services;
 
 pub async fn create_server<'a>(settings: &Settings) -> std::io::Result<Server> {
     // Create application state
@@ -22,7 +24,8 @@ pub async fn create_server<'a>(settings: &Settings) -> std::io::Result<Server> {
         actix_web::App::new()
             .app_data(actix_web::web::Data::new(state.clone()))
             .wrap(middleware::Logger::default())
-            .configure(init)
+            .configure(init_docs)
+            .configure(init_services)
     })
     .bind((settings.server.host.as_str(), settings.server.port))?
     .run();

@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 #[sea_orm(table_name = "todos")]
 pub struct Model {
     #[sea_orm(primary_key)]
+    #[sea_orm(auto_increment)]
     #[serde(skip_deserializing)]
     pub id: i32,
     pub title: String,
