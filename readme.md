@@ -18,6 +18,20 @@ Next things I would like to do:
 - [ ] Convert to schema first approach for database migrations and generation of entities from the live database
 - [ ] Revisit the project structure once it has been more than a few months and adjust it accordingly
 
+## Why actix-web?
+- It's the most mature and stable web framework in the Rust ecosystem.
+- It has the most contributors.
+- Supports web socket and HTTP/2.
+- Can be used with utoipa to generate OpenAPI specifications.
+- Most performant rust web framework according to TechEmpower Web Framewok Benchmarks round 19 and second to best (by 0.4 %) on round 20.
+
+## Why SeaORM?
+- Complete solution in interfacing with databases
+- Acts as a both a database ORM and a migrations management tool at the same time.
+- Not a lot of migrations management tool in Rust (Diesel is the only alternative).
+- Pure rust driver for PostgreSQL.
+
+Read more @ https://www.sea-ql.org/SeaORM/docs/internal-design/diesel
 
 ## Running in development mode
 ```sh
