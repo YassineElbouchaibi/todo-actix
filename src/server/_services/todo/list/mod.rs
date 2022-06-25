@@ -22,7 +22,7 @@ pub use model::{TodoListParams, TodoListResponse};
     context_path = "/v1/todo",
     tag = "Todo",
     responses(
-        (status = 200, description = "List of Todos", body = ListResponse),
+        (status = 200, description = "List of Todos", body = TodoListResponse),
         (status = 500, description = "Internal server error", body = ErrorResponse),
     ),
 )]
