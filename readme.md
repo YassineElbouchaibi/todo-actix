@@ -13,6 +13,7 @@ This is a simple todo server application to showcase the integration of the foll
 
 Next things I would like to do:
 - [ ] Add production grade logging
+- [ ] Add Sentry error reporting
 - [ ] Add consul service registration
 - [ ] Make a gRPC version of the API
 - [ ] Convert to schema first approach for database migrations and generation of entities from the live database
