@@ -13,16 +13,16 @@ This is a simple todo server application to showcase the integration of the foll
 - [config](https://docs.rs/config/latest/config/): the configuration management library used for this project
 - [tracing](https://docs.rs/tracing/latest/tracing/): the tracing library used for this project
 - [opentelemtry](https://opentelemetry.io/): the open telemetry library used for this project
+- [sentry](https://docs.rs/sentry/latest/sentry/): the error reporting library used for this project
 
 Next things I would like to do:
 
 - [x] Add production grade logging
 - [x] Add Sentry error reporting
 - [ ] Add consul service registration
-- [ ] Make a gRPC version of the API
-- [ ] Convert to schema first approach for database migrations and generation of entities from the live database
-- [ ] Revisit the project structure once it has been more than a few months and adjust it accordingly
 - [ ] Look into `anyhow` for error handling
+- [ ] Make a gRPC version of the API
+- [ ] Revisit the project structure once it has been more than a few months and adjust it accordingly
 
 ## Why actix-web?
 
@@ -157,7 +157,20 @@ $ coming soon...
 ### Healthcheck:
 
 ```sh
-$ curl -sv -X 'GET' http://localhost:8080/healthcheck | jq
+$ curl -sv -X 'GET' http://127.0.0.1:8080/healthcheck | jq
+> GET /healthcheck HTTP/1.1
+> Host: 127.0.0.1:8080
+> User-Agent: curl/7.79.1
+> Accept: */*
+>
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< content-length: 22
+< content-type: application/json
+< date: Sun, 26 Jun 2022 19:45:37 GMT
+{
+  "status": "Available"
+}
 ```
 
 ## Building
