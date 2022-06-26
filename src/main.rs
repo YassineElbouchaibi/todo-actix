@@ -2,6 +2,7 @@ mod models;
 mod server;
 mod utils;
 
+use models::settings;
 // External dependencies
 use tracing::info;
 
@@ -14,6 +15,13 @@ async fn main() -> std::io::Result<()> {
     // TODO: Load only tracing settings before configuring tracing and load the rest after
     let _guard = utils::tracing::configure_tracing(&settings.tracing).unwrap();
 
+    let consul_registrator_handle = utils::consul::register_with_consul(
+        &settings.consul,
+        settings.server.host.clone(),
+        settings.server.port,
+    )
+    .await;
+
     // Log settings
     info!("{:?}", settings);
 
@@ -21,7 +29,11 @@ async fn main() -> std::io::Result<()> {
     let server = server::create_server(&settings).await?;
 
     // Wait for server
-    let outcome = server.await;
-    info!("Terminating server...");
-    return outcome;
+    server.await?;
+    info!("Server terminated.");
+
+    consul_registrator_handle.await?;
+    info!("Consul registrator terminated.");
+
+    Ok(())
 }

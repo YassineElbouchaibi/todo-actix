@@ -14,12 +14,13 @@ This is a simple todo server application to showcase the integration of the foll
 - [tracing](https://docs.rs/tracing/latest/tracing/): the tracing library used for this project
 - [opentelemtry](https://opentelemetry.io/): the open telemetry library used for this project
 - [sentry](https://docs.rs/sentry/latest/sentry/): the error reporting library used for this project
+- [consul](https://www.consul.io/): the service discovery library used for this project
 
 Next things I would like to do:
 
 - [x] Add production grade logging
 - [x] Add Sentry error reporting
-- [ ] Add consul service registration
+- [x] Add consul service registration
 - [ ] Look into `anyhow` for error handling
 - [ ] Make a gRPC version of the API
 - [ ] Revisit the project structure once it has been more than a few months and adjust it accordingly
@@ -42,7 +43,7 @@ Next things I would like to do:
 
 Read more @ https://www.sea-ql.org/SeaORM/docs/internal-design/diesel
 
-## Starting DB and Jaeger UI (Visualize logs)
+## Starting DB, Jaeger UI (Visualize logs) and Consul (Service Discovery)
 
 ```sh
 $ docker-compose up
@@ -75,7 +76,7 @@ cargo watch -x 'run --bin todo-actix'
 
 ## Usage
 
-The api can be explored and tested out in the browser through the [swagger-ui](https://swagger.io/swagger-ui/) interface available at http://127.0.0.1:8080/docs/. The logs can be viewed in the [Jaeger UI](http://localhost:16686/) interface available at http://localhost:16686/search?service=todo-actix.
+The api can be explored and tested out in the browser through the [swagger-ui](https://swagger.io/swagger-ui/) interface available at http://127.0.0.1:8080/docs/. The logs can be viewed in the [Jaeger UI](http://localhost:16686/) interface available at http://localhost:16686/search?service=todo-actix. Consul is used to register the service with the consul agent. It can be viewed in the [Consul UI](http://localhost:8500/).
 
 ### List Todos:
 

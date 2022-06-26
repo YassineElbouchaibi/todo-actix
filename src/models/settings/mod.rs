@@ -1,3 +1,4 @@
+mod consul;
 mod database;
 mod server;
 mod tracing;
@@ -9,6 +10,7 @@ use serde::Deserialize;
 
 // Module level dependencies
 use self::tracing::{TracingSettings, TracingSettingsDefaults};
+use consul::{ConsulSettings, ConsulSettingsDefaults};
 use database::{DatabaseSettings, DatabaseSettingsDefaults};
 use server::{ServerSettings, ServerSettingsDefaults};
 
@@ -17,6 +19,7 @@ pub struct Settings {
     pub server: ServerSettings,
     pub database: DatabaseSettings,
     pub tracing: TracingSettings,
+    pub consul: ConsulSettings,
 }
 
 impl Settings {
@@ -26,10 +29,12 @@ impl Settings {
 
         info!("Loading settings...");
         let settings = Config::builder()
-            // Set default values for server
-            .set_server_defaults()?
+            // Set default values for consul
+            .set_consul_defaults()?
             // Set default values for database
             .set_database_defaults()?
+            // Set default values for server
+            .set_server_defaults()?
             // Set default values for tracing
             .set_tracing_defaults()?
             // Only parse the environment variables prefixed with "RUST_APP_" (Case insensitive)

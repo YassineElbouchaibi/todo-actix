@@ -15,6 +15,9 @@ entity = { path = "entity" }
 
 # External dependencies
 
+## Async runtime
+tokio = "^1"
+
 ## Web framework
 actix-web = "^4"
 utoipa = { version = "^1", features = ["actix_extras", "json"] } # Openapi spec generator
@@ -50,6 +53,9 @@ opentelemetry-jaeger = { version = "^0", features = ["rt-tokio-current-thread"] 
 sentry = "^0"
 sentry-actix = "^0"
 sentry-tracing = "^0"
+
+## Consul
+consulrs = "^0"
 
 [dev-dependencies]
 # cargo-watch = "^8"
