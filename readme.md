@@ -11,10 +11,12 @@ This is a simple todo server application to showcase the integration of the foll
 - [serde](https://serde.rs/): the serialization library used for this project
 - [dotenv](https://github.com/dotenv-rs/dotenv): the environment variable management library used for this project
 - [config](https://docs.rs/config/latest/config/): the configuration management library used for this project
+- [tracing](https://docs.rs/tracing/latest/tracing/): the tracing library used for this project
+- [opentelemtry](https://opentelemetry.io/): the open telemetry library used for this project
 
 Next things I would like to do:
 
-- [ ] Add production grade logging
+- [x] Add production grade logging
 - [ ] Add Sentry error reporting
 - [ ] Add consul service registration
 - [ ] Make a gRPC version of the API
@@ -39,7 +41,7 @@ Next things I would like to do:
 
 Read more @ https://www.sea-ql.org/SeaORM/docs/internal-design/diesel
 
-## Starting DB
+## Starting DB and Jaeger UI (Visualize logs)
 
 ```sh
 $ docker-compose up
@@ -72,7 +74,7 @@ cargo watch -x 'run --bin todo-actix'
 
 ## Usage
 
-The api can be explored and tested out in the browser through the [swagger-ui](https://swagger.io/swagger-ui/) interface available at http://127.0.0.1:8080/docs/.
+The api can be explored and tested out in the browser through the [swagger-ui](https://swagger.io/swagger-ui/) interface available at http://127.0.0.1:8080/docs/. The logs can be viewed in the [Jaeger UI](http://localhost:16686/) interface available at http://localhost:16686/search?service=todo-actix.
 
 ### List Todos:
 
