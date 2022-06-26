@@ -21,11 +21,15 @@ pub struct TracingSettings {
     pub json_flatten_event: bool,
     pub json_with_current_span: bool,
     pub json_with_span_list: bool,
+    // Sentry
+    pub with_sentry: bool,
+    pub sentry_environment: String,
+    pub sentry_traces_sample_rate: f32,
 }
 
 impl ConfigureTracingParameters for TracingSettings {
     fn get_app_name(&self) -> String {
-        (&self.app_name).to_string()
+        self.app_name.clone()
     }
     fn get_with_telemetry(&self) -> bool {
         self.with_telemetry
@@ -63,6 +67,15 @@ impl ConfigureTracingParameters for TracingSettings {
     fn get_json_with_span_list(&self) -> bool {
         self.json_with_span_list
     }
+    fn get_with_sentry(&self) -> bool {
+        self.with_sentry
+    }
+    fn get_sentry_environment(&self) -> String {
+        self.sentry_environment.clone()
+    }
+    fn get_sentry_traces_sample_rate(&self) -> f32 {
+        self.sentry_traces_sample_rate
+    }
 }
 
 pub trait TracingSettingsDefaults {
@@ -86,6 +99,10 @@ impl TracingSettingsDefaults for ConfigBuilder<DefaultState> {
             // Json specific configuration
             .set_default("tracing.json_flatten_event", true)?
             .set_default("tracing.json_with_current_span", true)?
-            .set_default("tracing.json_with_span_list", true)
+            .set_default("tracing.json_with_span_list", true)?
+            // Sentry
+            .set_default("tracing.with_sentry", true)?
+            .set_default("tracing.sentry_environment", "development")?
+            .set_default("tracing.sentry_traces_sample_rate", 1.0)
     }
 }

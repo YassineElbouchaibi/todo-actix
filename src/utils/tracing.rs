@@ -34,11 +34,35 @@ pub trait ConfigureTracingParameters {
     fn get_json_flatten_event(&self) -> bool;
     fn get_json_with_current_span(&self) -> bool;
     fn get_json_with_span_list(&self) -> bool;
+    // Sentry
+    fn get_with_sentry(&self) -> bool;
+    fn get_sentry_environment(&self) -> String;
+    fn get_sentry_traces_sample_rate(&self) -> f32;
 }
 
 pub fn configure_tracing<T: ConfigureTracingParameters>(
     params: &T,
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> Result<Option<sentry::ClientInitGuard>, Box<dyn std::error::Error>> {
+    // Configure sentry
+    let (_guard, sentry_layer) = if params.get_with_sentry() {
+        std::env::set_var("RUST_BACKTRACE", "1");
+        (
+            Some(sentry::init(sentry::ClientOptions {
+                release: sentry::release_name!(),
+                // DSN is set through SENTRY_DSN environment variable
+                environment: Some(params.get_sentry_environment().into()),
+                traces_sample_rate: params.get_sentry_traces_sample_rate(),
+                // Session mode
+                session_mode: sentry::SessionMode::Request,
+                auto_session_tracking: true,
+                ..Default::default()
+            })),
+            Some(sentry_tracing::layer()),
+        )
+    } else {
+        (None, None)
+    };
+
     // Create a filter layer
     let filter_layer = EnvFilter::try_from_default_env().or_else(|_| EnvFilter::try_new("info"))?;
 
@@ -59,9 +83,10 @@ pub fn configure_tracing<T: ConfigureTracingParameters>(
     // Create layer registry
     let registry = tracing_subscriber::registry()
         .with(filter_layer)
+        .with(sentry_layer)
         .with(telemetry_layer);
 
-    Ok(match params.get_structure() {
+    match params.get_structure() {
         TracingStructure::Full => {
             registry
                 .with(
@@ -138,5 +163,7 @@ pub fn configure_tracing<T: ConfigureTracingParameters>(
                 ))
                 .init();
         }
-    })
+    }
+
+    Ok(_guard)
 }

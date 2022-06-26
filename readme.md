@@ -17,7 +17,7 @@ This is a simple todo server application to showcase the integration of the foll
 Next things I would like to do:
 
 - [x] Add production grade logging
-- [ ] Add Sentry error reporting
+- [x] Add Sentry error reporting
 - [ ] Add consul service registration
 - [ ] Make a gRPC version of the API
 - [ ] Convert to schema first approach for database migrations and generation of entities from the live database
@@ -31,6 +31,7 @@ Next things I would like to do:
 - Supports web socket and HTTP/2.
 - Can be used with utoipa to generate OpenAPI specifications.
 - Most performant rust web framework according to TechEmpower Web Framewok Benchmarks round 19 and second to best (by 0.4 %) on round 20.
+- Sentry integration.
 
 ## Why SeaORM?
 
@@ -151,6 +152,12 @@ $ coming soon...
 
 ```sh
 $ coming soon...
+```
+
+### Healthcheck:
+
+```sh
+$ curl -sv -X 'GET' http://localhost:8080/healthcheck | jq
 ```
 
 ## Building

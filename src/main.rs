@@ -12,7 +12,7 @@ async fn main() -> std::io::Result<()> {
 
     // Configure tracing
     // TODO: Load only tracing settings before configuring tracing and load the rest after
-    utils::tracing::configure_tracing(&settings.tracing).unwrap();
+    let _guard = utils::tracing::configure_tracing(&settings.tracing).unwrap();
 
     // Log settings
     info!("{:?}", settings);

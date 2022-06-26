@@ -24,6 +24,7 @@ pub async fn create_server<'a>(settings: &Settings) -> std::io::Result<Server> {
         actix_web::App::new()
             .app_data(actix_web::web::Data::new(state.clone()))
             .wrap(tracing_actix_web::TracingLogger::default())
+            .wrap(sentry_actix::Sentry::new())
             .configure(init_docs)
             .configure(init_services)
     })
