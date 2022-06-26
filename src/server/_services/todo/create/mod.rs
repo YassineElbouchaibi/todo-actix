@@ -2,8 +2,8 @@ mod model;
 
 // External dependencies
 use actix_web::{http, post, web, HttpResponse, Responder};
-use log::info;
 use sea_orm::{ActiveModelTrait, Set};
+use tracing::info;
 
 // Internal dependencies
 use entity::todo::ActiveModel as TodoActiveModel;
@@ -16,7 +16,6 @@ use crate::server::_services::todo::model::Todo;
 // Module level dependencies
 pub use model::{TodoCreatePayload, TodoCreateResponse};
 
-#[tracing::instrument]
 #[utoipa::path(
     context_path = "/v1/todo",
     tag = "Todo",

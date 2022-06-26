@@ -22,9 +22,9 @@ pub trait ConfigureTracingParameters {
     fn get_with_thread_names(&self) -> bool;
     fn get_with_ansi(&self) -> bool;
     // Json specific configuration
-    fn json_get_flatten_event(&self) -> bool;
-    fn json_get_with_current_span(&self) -> bool;
-    fn json_get_with_span_list(&self) -> bool;
+    fn get_json_flatten_event(&self) -> bool;
+    fn get_json_with_current_span(&self) -> bool;
+    fn get_json_with_span_list(&self) -> bool;
 }
 
 pub fn configure_tracing<T: ConfigureTracingParameters>(
@@ -92,9 +92,9 @@ pub fn configure_tracing<T: ConfigureTracingParameters>(
                         .with_thread_names(params.get_with_thread_names())
                         .with_ansi(params.get_with_ansi())
                         // Json specific configuration
-                        .flatten_event(params.json_get_flatten_event())
-                        .with_current_span(params.json_get_with_current_span())
-                        .with_span_list(params.json_get_with_span_list()),
+                        .flatten_event(params.get_json_flatten_event())
+                        .with_current_span(params.get_json_with_current_span())
+                        .with_span_list(params.get_json_with_span_list()),
                 )
                 .init();
         }

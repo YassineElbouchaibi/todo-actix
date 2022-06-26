@@ -46,13 +46,13 @@ impl ConfigureTracingParameters for TracingSettings {
     fn get_with_ansi(&self) -> bool {
         self.with_ansi
     }
-    fn json_get_flatten_event(&self) -> bool {
+    fn get_json_flatten_event(&self) -> bool {
         self.json_flatten_event
     }
-    fn json_get_with_current_span(&self) -> bool {
+    fn get_json_with_current_span(&self) -> bool {
         self.json_with_current_span
     }
-    fn json_get_with_span_list(&self) -> bool {
+    fn get_json_with_span_list(&self) -> bool {
         self.json_with_span_list
     }
 }

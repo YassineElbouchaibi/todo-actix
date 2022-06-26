@@ -3,7 +3,7 @@ mod server;
 mod utils;
 
 // External dependencies
-use log::info;
+use tracing::info;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

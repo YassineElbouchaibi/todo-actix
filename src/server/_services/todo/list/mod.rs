@@ -18,7 +18,6 @@ use crate::server::_services::todo::model::Todo;
 use constants::DEFAULT_TODOS_PER_PAGE;
 pub use model::{TodoListParams, TodoListResponse};
 
-#[tracing::instrument]
 #[utoipa::path(
     context_path = "/v1/todo",
     tag = "Todo",

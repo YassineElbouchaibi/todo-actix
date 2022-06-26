@@ -4,8 +4,7 @@ mod _services;
 
 // External dependencies
 use actix_web::dev::Server;
-use actix_web::middleware;
-use log::info;
+use tracing::info;
 
 // Application level dependencies
 use crate::models::settings::Settings;
@@ -24,7 +23,7 @@ pub async fn create_server<'a>(settings: &Settings) -> std::io::Result<Server> {
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
             .app_data(actix_web::web::Data::new(state.clone()))
-            .wrap(middleware::Logger::default())
+            .wrap(tracing_actix_web::TracingLogger::default())
             .configure(init_docs)
             .configure(init_services)
     })

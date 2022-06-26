@@ -3,8 +3,8 @@ mod server;
 mod tracing;
 
 // External dependencies
+use ::tracing::info;
 use config::{Config, ConfigError, Environment};
-use log::info;
 use serde::Deserialize;
 
 // Module level dependencies

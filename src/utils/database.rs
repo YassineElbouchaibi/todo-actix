@@ -1,8 +1,7 @@
 // External dependencies
-use log::info;
 use sea_orm::{DatabaseConnection, DbErr};
+use tracing::info;
 
-#[tracing::instrument]
 pub fn create_database_url(
     protocol: &str,
     user: &str,
@@ -22,7 +21,6 @@ pub fn create_database_url(
     )
 }
 
-#[tracing::instrument]
 pub async fn create_database_connection(
     protocol: &str,
     user: &str,
