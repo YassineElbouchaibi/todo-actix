@@ -24,9 +24,13 @@ utoipa = { version = "^1", features = ["actix_extras", "json"] }
 utoipa-swagger-ui = { version = "^1", features = ["actix-web"] }
 chrono = "^0"
 tracing = "^0"
-tracing-subscriber = {version = "^0", features = ["json", "env-filter", "ansi"]}
+tracing-subscriber = {version = "^0", features = ["registry", "json", "env-filter", "ansi"]}
 tracing-log = "^0"
-tracing-actix-web = "^0"
+tracing-actix-web = {version = "^0", features = ["opentelemetry_0_17"]}
+tracing-bunyan-formatter = "^0"
+tracing-opentelemetry = { version = "^0" }
+opentelemetry = { version = "^0", features = ["rt-tokio-current-thread"] }
+opentelemetry-jaeger = { version = "^0", features = ["rt-tokio-current-thread"] }
 
 [dev-dependencies]
 # cargo-watch = "^8"

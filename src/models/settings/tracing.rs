@@ -5,8 +5,10 @@ use serde::Deserialize;
 // Application level dependencies
 use crate::utils::tracing::{ConfigureTracingParameters, TracingStructure};
 
-#[derive(Deserialize, Debug, Clone, Copy)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct TracingSettings {
+    pub app_name: String,
+    pub with_telemetry: bool,
     pub structure: TracingStructure,
     pub with_file: bool,
     pub with_level: bool,
@@ -22,6 +24,12 @@ pub struct TracingSettings {
 }
 
 impl ConfigureTracingParameters for TracingSettings {
+    fn get_app_name(&self) -> String {
+        (&self.app_name).to_string()
+    }
+    fn get_with_telemetry(&self) -> bool {
+        self.with_telemetry
+    }
     fn get_structure(&self) -> TracingStructure {
         self.structure
     }
@@ -65,7 +73,9 @@ pub trait TracingSettingsDefaults {
 
 impl TracingSettingsDefaults for ConfigBuilder<DefaultState> {
     fn set_tracing_defaults(self) -> Result<Self, ConfigError> {
-        self.set_default("tracing.structure", "Full")?
+        self.set_default("tracing.app_name", "unknown-rust-app")?
+            .set_default("tracing.with_telemetry", false)?
+            .set_default("tracing.structure", "Full")?
             .set_default("tracing.with_file", true)?
             .set_default("tracing.with_level", true)?
             .set_default("tracing.with_line_number", true)?

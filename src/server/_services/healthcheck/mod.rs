@@ -10,6 +10,7 @@ use crate::server::_models::app_state::AppState;
 // Module level dependencies
 pub use model::{HealthCheckResponse, HealthCheckStatus};
 
+#[tracing::instrument]
 #[utoipa::path(
     tag = "Maintenance",
     responses(

@@ -16,6 +16,7 @@ use crate::server::_services::todo::model::Todo;
 // Module level dependencies
 pub use model::{TodoCreatePayload, TodoCreateResponse};
 
+#[tracing::instrument]
 #[utoipa::path(
     context_path = "/v1/todo",
     tag = "Todo",
@@ -32,8 +33,6 @@ async fn create(
 ) -> impl Responder {
     let db_connection = &data.db_connection;
 
-    // TODO: Validate payload
-
     // Create Todo
     let result = TodoActiveModel {
         title: Set(payload.title.to_owned()),
@@ -42,7 +41,7 @@ async fn create(
     .insert(db_connection)
     .await;
 
-    info!("{:#?}", result);
+    info!("Created Todo {:#?}", result);
 
     if result.is_err() {
         return HttpResponse::InternalServerError().json(ErrorResponse {
