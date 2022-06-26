@@ -1,6 +1,8 @@
 // External dependencies
+use log::info;
 use sea_orm::{DatabaseConnection, DbErr};
 
+#[tracing::instrument]
 pub fn create_database_url(
     protocol: &str,
     user: &str,
@@ -20,6 +22,7 @@ pub fn create_database_url(
     )
 }
 
+#[tracing::instrument]
 pub async fn create_database_connection(
     protocol: &str,
     user: &str,
@@ -28,10 +31,10 @@ pub async fn create_database_connection(
     port: &u16,
     database: &str,
 ) -> Result<DatabaseConnection, DbErr> {
-    println!("Creating database connection url...");
+    info!("Creating database connection url...");
     let db_url = create_database_url(protocol, user, password, host, port, database);
     let outcome = sea_orm::Database::connect(&db_url).await;
-    println!("Database connection created using {}", &db_url);
+    info!("Database connection created using {}", &db_url);
 
     return outcome;
 }

@@ -2,6 +2,7 @@ mod model;
 
 // External dependencies
 use actix_web::{http, post, web, HttpResponse, Responder};
+use log::info;
 use sea_orm::{ActiveModelTrait, Set};
 
 // Internal dependencies
@@ -15,6 +16,7 @@ use crate::server::_services::todo::model::Todo;
 // Module level dependencies
 pub use model::{TodoCreatePayload, TodoCreateResponse};
 
+#[tracing::instrument]
 #[utoipa::path(
     context_path = "/v1/todo",
     tag = "Todo",
@@ -41,7 +43,7 @@ async fn create(
     .insert(db_connection)
     .await;
 
-    println!("{:#?}", result);
+    info!("{:#?}", result);
 
     if result.is_err() {
         return HttpResponse::InternalServerError().json(ErrorResponse {

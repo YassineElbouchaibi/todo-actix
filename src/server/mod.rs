@@ -5,6 +5,7 @@ mod _services;
 // External dependencies
 use actix_web::dev::Server;
 use actix_web::middleware;
+use log::info;
 
 // Application level dependencies
 use crate::models::settings::Settings;
@@ -18,7 +19,7 @@ pub async fn create_server<'a>(settings: &Settings) -> std::io::Result<Server> {
     // Create application state
     let state = AppState::from_settings(&settings).await;
 
-    println!("Starting server...");
+    info!("Starting server...");
 
     let server = actix_web::HttpServer::new(move || {
         actix_web::App::new()
@@ -30,7 +31,7 @@ pub async fn create_server<'a>(settings: &Settings) -> std::io::Result<Server> {
     .bind((settings.server.host.as_str(), settings.server.port))?
     .run();
 
-    println!(
+    info!(
         "Server started on http://{host}:{port}/",
         host = &settings.server.host,
         port = settings.server.port
