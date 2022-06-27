@@ -21,6 +21,8 @@ Next things I would like to do:
 - [x] Add production grade logging
 - [x] Add Sentry error reporting
 - [x] Add consul service registration
+- [ ] Add an endpoint listing todos with apache arrow
+- [ ] Add some tests
 - [ ] Look into `anyhow` for error handling
 - [ ] Make a gRPC version of the API
 - [ ] Revisit the project structure once it has been more than a few months and adjust it accordingly
