@@ -2,7 +2,6 @@ mod models;
 mod server;
 mod utils;
 
-use models::settings;
 // External dependencies
 use tracing::info;
 
