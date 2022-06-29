@@ -39,23 +39,36 @@ async fn list(params: web::Query<TodoListParams>, data: web::Data<AppState>) -> 
     let paginator = TodoEntity::find()
         .order_by_asc(TodoColumn::Id)
         .paginate(db_connection, todos_per_page);
-    let num_pages = paginator.num_pages().await.ok().unwrap();
+    let num_pages = match paginator.num_pages().await {
+        Ok(num_pages) => num_pages,
+        Err(error) => {
+            tracing::error!("Failed to get number of pages: {:?}", error);
+            return HttpResponse::InternalServerError().json(ErrorResponse {
+                code: http::StatusCode::INTERNAL_SERVER_ERROR.as_u16(),
+                message: "Failed to get number of pages".to_string(),
+            });
+        }
+    };
 
     // Get Todos
     let todos = paginator.fetch_page(page - 1).await;
 
-    if todos.is_err() {
-        return HttpResponse::InternalServerError().json(ErrorResponse {
-            code: http::StatusCode::INTERNAL_SERVER_ERROR.as_u16(),
-            message: "Failed to fetch Todos".to_string(),
-        });
-    } else {
-        let todos = todos.unwrap();
-        return HttpResponse::Ok().json(TodoListResponse {
-            todos: todos.iter().map(|todo| Todo::from_entity(todo)).collect(),
-            page,
-            todos_per_page,
-            num_pages,
-        });
+    match todos {
+        Ok(todos) => {
+            tracing::info!("Found Todos {:?}", todos);
+            return HttpResponse::Ok().json(TodoListResponse {
+                todos: todos.iter().map(Todo::from_entity).collect(),
+                page,
+                todos_per_page,
+                num_pages,
+            });
+        }
+        Err(error) => {
+            tracing::error!("Failed to get Todos: {:?}", error);
+            return HttpResponse::InternalServerError().json(ErrorResponse {
+                code: http::StatusCode::INTERNAL_SERVER_ERROR.as_u16(),
+                message: "Failed to fetch Todos".to_string(),
+            });
+        }
     }
 }

@@ -5,7 +5,15 @@ use utoipa::{openapi, Modify};
 use crate::server::_models::error_response::ErrorResponse;
 use crate::server::_services::healthcheck::{HealthCheckResponse, HealthCheckStatus};
 use crate::server::_services::todo::{
-    create::TodoCreatePayload, create::TodoCreateResponse, list::TodoListResponse, model::Todo,
+    // Model
+    model::Todo,
+    // List
+    list::TodoListResponse,
+    // Create
+    create::TodoCreatePayload,
+    create::TodoCreateResponse,
+    // Get
+    get::TodoGetResponse,
 };
 
 pub fn create_api_docs() -> utoipa::openapi::OpenApi {
@@ -15,15 +23,22 @@ pub fn create_api_docs() -> utoipa::openapi::OpenApi {
             crate::server::_services::healthcheck::healthcheck,
             crate::server::_services::todo::list::list,
             crate::server::_services::todo::create::create,
+            crate::server::_services::todo::get::get,
         ),
         components(
             // General
             ErrorResponse,
+
             // Todo
             Todo,
+            //// List
             TodoListResponse,
+            //// Create
             TodoCreatePayload,
             TodoCreateResponse,
+            //// Get
+            TodoGetResponse,
+            
             // Maintenance
             HealthCheckStatus,
             HealthCheckResponse,

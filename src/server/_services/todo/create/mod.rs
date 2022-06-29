@@ -3,7 +3,6 @@ mod model;
 // External dependencies
 use actix_web::{http, post, web, HttpResponse, Responder};
 use sea_orm::{ActiveModelTrait, Set};
-use tracing::info;
 
 // Internal dependencies
 use entity::todo::ActiveModel as TodoActiveModel;
@@ -33,7 +32,6 @@ async fn create(
 ) -> impl Responder {
     let db_connection = &data.db_connection;
 
-    // Create Todo
     let result = TodoActiveModel {
         title: Set(payload.title.to_owned()),
         ..Default::default()
@@ -41,17 +39,19 @@ async fn create(
     .insert(db_connection)
     .await;
 
-    info!("Created Todo {:#?}", result);
-
-    if result.is_err() {
-        return HttpResponse::InternalServerError().json(ErrorResponse {
-            code: http::StatusCode::INTERNAL_SERVER_ERROR.as_u16(),
-            message: "Failed to create Todo".to_string(),
-        });
-    } else {
-        let todo = result.unwrap();
-        return HttpResponse::Created().json(TodoCreateResponse {
-            todo: Todo::from_entity(&todo),
-        });
+    match result {
+        Ok(todo) => {
+            tracing::info!("Created Todo {:#?}", todo);
+            return HttpResponse::Created().json(TodoCreateResponse {
+                todo: Todo::from_entity(&todo),
+            });
+        }
+        Err(error) => {
+            tracing::error!("Todo not found: {:?}", error);
+            return HttpResponse::InternalServerError().json(ErrorResponse {
+                code: http::StatusCode::INTERNAL_SERVER_ERROR.as_u16(),
+                message: "Failed to create Todo".to_string(),
+            });
+        }
     }
 }
