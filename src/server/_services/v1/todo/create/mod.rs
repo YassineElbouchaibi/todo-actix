@@ -10,7 +10,7 @@ use entity::todo::ActiveModel as TodoActiveModel;
 // Application level dependencies
 use crate::server::_models::app_state::AppState;
 use crate::server::_models::error_response::ErrorResponse;
-use crate::server::_services::todo::model::Todo;
+use crate::server::_services::v1::todo::model::Todo;
 
 // Module level dependencies
 pub use model::{TodoCreatePayload, TodoCreateResponse};
@@ -47,7 +47,7 @@ async fn create(
             });
         }
         Err(error) => {
-            tracing::error!("Todo not found: {:?}", error);
+            tracing::error!("Failed to create Todo: {:?}", error);
             return HttpResponse::InternalServerError().json(ErrorResponse {
                 code: http::StatusCode::INTERNAL_SERVER_ERROR.as_u16(),
                 message: "Failed to create Todo".to_string(),

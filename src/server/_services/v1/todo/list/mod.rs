@@ -12,7 +12,7 @@ use entity::todo::{Column as TodoColumn, Entity as TodoEntity};
 // Application level dependencies
 use crate::server::_models::app_state::AppState;
 use crate::server::_models::error_response::ErrorResponse;
-use crate::server::_services::todo::model::Todo;
+use crate::server::_services::v1::todo::model::Todo;
 
 // Module level dependencies
 use constants::DEFAULT_TODOS_PER_PAGE;
@@ -50,10 +50,7 @@ async fn list(params: web::Query<TodoListParams>, data: web::Data<AppState>) -> 
         }
     };
 
-    // Get Todos
-    let todos = paginator.fetch_page(page - 1).await;
-
-    match todos {
+    match paginator.fetch_page(page - 1).await {
         Ok(todos) => {
             tracing::info!("Found Todos {:?}", todos);
             return HttpResponse::Ok().json(TodoListResponse {
@@ -67,7 +64,7 @@ async fn list(params: web::Query<TodoListParams>, data: web::Data<AppState>) -> 
             tracing::error!("Failed to get Todos: {:?}", error);
             return HttpResponse::InternalServerError().json(ErrorResponse {
                 code: http::StatusCode::INTERNAL_SERVER_ERROR.as_u16(),
-                message: "Failed to fetch Todos".to_string(),
+                message: "Failed to get Todos".to_string(),
             });
         }
     }

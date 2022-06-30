@@ -4,16 +4,21 @@ use utoipa::{openapi, Modify};
 // Application level dependencies
 use crate::server::_models::error_response::ErrorResponse;
 use crate::server::_services::healthcheck::{HealthCheckResponse, HealthCheckStatus};
-use crate::server::_services::todo::{
-    // Model
-    model::Todo,
-    // List
-    list::TodoListResponse,
+use crate::server::_services::v1::todo::{
     // Create
     create::TodoCreatePayload,
     create::TodoCreateResponse,
+    // Delete
+    delete::TodoDeleteResponse,
     // Get
     get::TodoGetResponse,
+    // List
+    list::TodoListResponse,
+    // Model
+    model::Todo,
+    // Update
+    update::TodoUpdatePayload,
+    update::TodoUpdateResponse,
 };
 
 pub fn create_api_docs() -> utoipa::openapi::OpenApi {
@@ -21,9 +26,11 @@ pub fn create_api_docs() -> utoipa::openapi::OpenApi {
     #[openapi(
         handlers(
             crate::server::_services::healthcheck::healthcheck,
-            crate::server::_services::todo::list::list,
-            crate::server::_services::todo::create::create,
-            crate::server::_services::todo::get::get,
+            crate::server::_services::v1::todo::list::list,
+            crate::server::_services::v1::todo::create::create,
+            crate::server::_services::v1::todo::get::get,
+            crate::server::_services::v1::todo::update::update,
+            crate::server::_services::v1::todo::delete::delete,
         ),
         components(
             // General
@@ -38,7 +45,12 @@ pub fn create_api_docs() -> utoipa::openapi::OpenApi {
             TodoCreateResponse,
             //// Get
             TodoGetResponse,
-            
+            //// Update
+            TodoUpdatePayload,
+            TodoUpdateResponse,
+            //// Delete
+            TodoDeleteResponse,
+
             // Maintenance
             HealthCheckStatus,
             HealthCheckResponse,
